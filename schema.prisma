@@ -1,0 +1,53 @@
+datasource db {
+  // could be postgresql or mysql
+  provider = "postgresql"
+  url = "postgresql://yodev:asb123@127.0.0.1/rmea_life_db"
+}
+ 
+generator db {
+  provider = "go run github.com/steebchen/prisma-client-go"
+}
+ 
+model Task {
+  id             String   @default(cuid()) @id
+  createdAt      DateTime @default(now())
+  updatedAt      DateTime @updatedAt
+  title          String
+  description    String   @default("")
+  completed      Boolean  @default(false)
+  user   User   @relation("UserTasks", fields: [userId], references: [id])
+  userId         String
+  repeatable     Boolean  @default(false)
+  repeatduration Int      @default(0)
+}
+
+model ShopItem {
+  id        String   @default(cuid()) @id
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+  name      String
+  price     Int
+  quantity  Int
+  user   User   @relation("UserShopItems", fields: [userId], references: [id])
+  userId    String
+}
+
+model BaseUser {
+  id        String   @default(cuid()) @id
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+  name      String
+  coins     Int
+  xp        Int
+}
+
+model User {
+  id        String   @default(cuid()) @id
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+  name      String
+  coins     Int
+  xp        Int
+  tasks     Task[]     @relation("UserTasks")
+  shopitems ShopItem[] @relation("UserShopItems")
+}
