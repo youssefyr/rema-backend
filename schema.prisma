@@ -1,39 +1,38 @@
-datasource db {
-  // could be postgresql or mysql
-  provider = "postgresql"
-  url = "postgresql://yodev:asb123@127.0.0.1/rmea_life_db"
-}
- 
 generator db {
   provider = "go run github.com/steebchen/prisma-client-go"
 }
- 
+
+datasource db {
+  provider = "postgresql"
+  url      = "postgresql://yodev:asb123@127.0.0.1/xira_life_db"
+}
+
 model Task {
-  id             String   @default(cuid()) @id
+  id             String   @id @default(cuid())
   createdAt      DateTime @default(now())
   updatedAt      DateTime @updatedAt
   title          String
   description    String   @default("")
   completed      Boolean  @default(false)
-  user   User   @relation("UserTasks", fields: [userId], references: [id])
   userId         String
   repeatable     Boolean  @default(false)
   repeatduration Int      @default(0)
+  user           User     @relation("UserTasks", fields: [userId], references: [id])
 }
 
 model ShopItem {
-  id        String   @default(cuid()) @id
+  id        String   @id @default(cuid())
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
   name      String
   price     Int
   quantity  Int
-  user   User   @relation("UserShopItems", fields: [userId], references: [id])
   userId    String
+  user      User     @relation("UserShopItems", fields: [userId], references: [id])
 }
 
 model BaseUser {
-  id        String   @default(cuid()) @id
+  id        String   @id @default(cuid())
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
   name      String
@@ -42,12 +41,16 @@ model BaseUser {
 }
 
 model User {
-  id        String   @default(cuid()) @id
-  createdAt DateTime @default(now())
-  updatedAt DateTime @updatedAt
-  name      String
-  coins     Int
-  xp        Int
-  tasks     Task[]     @relation("UserTasks")
-  shopitems ShopItem[] @relation("UserShopItems")
+  id         String     @id @default(cuid())
+  password   String
+  sessionID  String     @map("session_id")
+  updatedAt  DateTime   @updatedAt
+  name       String
+  coins      Int        @default(0)
+  xp         Int        @default(0)
+  email      String     @unique
+  createdAt  DateTime   @default(now())
+  rememberMe String[]   @default([])
+  shopitems  ShopItem[] @relation("UserShopItems")
+  tasks      Task[]     @relation("UserTasks")
 }

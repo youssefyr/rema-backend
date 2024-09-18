@@ -1,6 +1,6 @@
-# Rema Backend
+# xira Backend
 
-This project is the backend for a Rema application. It provides a GraphQL API to manage users, tasks, and shop items. The backend is built using Go and Prisma for database management.
+This project is the backend for a xira application. It provides a GraphQL API to manage users, tasks, and shop items. The backend is built using Go and Prisma for database management.
 
 
 ## Getting Started
@@ -15,8 +15,8 @@ This project is the backend for a Rema application. It provides a GraphQL API to
 1. **Clone the repository:**
 
     ```sh
-    git clone https://github.com/youssefyr/rema-backend.git
-    cd rema-backend
+    git clone https://github.com/youssefyr/xira-backend.git
+    cd xira-backend
     ```
 
 2. **Copy the example environment file and update it with your database credentials:**
